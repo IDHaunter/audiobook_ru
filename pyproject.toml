@@ -3,7 +3,7 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "audiobook-ru"
+name = "audiobook_ru"
 version = "0.1.0"
 description = "Convert Russian-language books to audiobooks using local Piper TTS"
 requires-python = ">=3.12"
@@ -24,7 +24,7 @@ dev = [
 ]
 
 [project.scripts]
-audiobook-ru = "audiobook_ru.cli:main"
+audiobook_ru = "audiobook_ru.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["audiobook_ru*"]

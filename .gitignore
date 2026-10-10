@@ -219,6 +219,10 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+# Structure generator
+structure.md
+generate_structure.py
+
 # book text and work results
 .DS_Store
 input/.DS_Store

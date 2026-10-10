@@ -1,4 +1,4 @@
-# Makefile for audiobook-ru
+# Makefile for audiobook_ru
 # ========================
 # Local-first TTS audiobook generator using Piper
 # ========================
@@ -10,7 +10,7 @@ all: help
 
 # --- Help ---
 help:
-	@echo "audiobook-ru Makefile targets:"
+	@echo "audiobook_ru Makefile targets:"
 	@echo ""
 	@echo "  install       Install package in development mode"
 	@echo "  doctor        Check environment and configuration"
@@ -33,7 +33,7 @@ install-deps:
 
 # --- Environment checks ---
 doctor:
-	@echo "=== audiobook-ru doctor ==="
+	@echo "=== audiobook_ru doctor ==="
 	@python3 -c "import piper; print('Piper: OK')" 2/echo "Piper: checking..."
 	@which ffmpeg > /dev/null 2>&1 && echo "FFmpeg: OK" || echo "FFmpeg: NOT FOUND"
 	@python3 --version

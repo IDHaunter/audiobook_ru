@@ -35,15 +35,21 @@ make install
 
 ```bash
 # 1. Prepare book text
-audiobook-ru prepare input/book.txt
+python3 -m audiobook_ru prepare input/book.txt
 
 # 2. Synthesize audio with a Russian Piper model
-audiobook-ru synthesize --model models/ru_RU-medium-high.onnx
+python3 -m audiobook_ru synthesize --model models/ru_RU-medium-high.onnx
 
 # 3. Assemble into chapters and full audiobook
-audiobook-ru assemble
+python3 -m audiobook_ru assemble
 
 # Output: output/audiobook.mp3 and output/chapter_*.mp3
+```
+
+## Clean Work
+
+```bash
+make clean  
 ```
 
 ## Directory Structure
@@ -76,7 +82,7 @@ audiobook_ru/
 Check environment and dependencies.
 
 ```bash
-audiobook-ru doctor
+audiobook_ru doctor
 ```
 
 **Output:**
@@ -90,7 +96,7 @@ audiobook-ru doctor
 Prepare book text into segments for synthesis.
 
 ```bash
-audiobook-ru prepare input/book.txt [OPTIONS]
+audiobook_ru prepare input/book.txt [OPTIONS]
 ```
 
 **Options:**
@@ -110,7 +116,7 @@ audiobook-ru prepare input/book.txt [OPTIONS]
 Synthesize audio from prepared segments.
 
 ```bash
-audiobook-ru synthesize --model models/ru_RU-medium-high.onnx [OPTIONS]
+audiobook_ru synthesize --model models/ru_RU-medium-high.onnx [OPTIONS]
 ```
 
 **Options:**
@@ -130,7 +136,7 @@ audiobook-ru synthesize --model models/ru_RU-medium-high.onnx [OPTIONS]
 Preview a single synthesized segment as WAV.
 
 ```bash
-audiobook-ru preview --segment segment_0001 --model models/ru_RU-medium-high.onnx
+audiobook_ru preview --segment segment_0001 --model models/ru_RU-medium-high.onnx
 ```
 
 **Options:**
@@ -142,7 +148,7 @@ audiobook-ru preview --segment segment_0001 --model models/ru_RU-medium-high.onn
 Assemble chapter MP3s and full audiobook.
 
 ```bash
-audiobook-ru assemble [OPTIONS]
+audiobook_ru assemble [OPTIONS]
 ```
 
 **Options:**

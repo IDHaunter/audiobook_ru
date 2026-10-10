@@ -13,7 +13,7 @@ def test_cli_help():
         text=True,
     )
     assert result.returncode == 0
-    assert "audiobook-ru" in result.stdout or "audiobook" in result.stdout.lower()
+    assert "audiobook_ru" in result.stdout or "audiobook" in result.stdout.lower()
 
 
 def test_cli_doctor():

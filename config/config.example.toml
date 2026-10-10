@@ -1,4 +1,4 @@
-# audiobook-ru configuration file
+# audiobook_ru configuration file
 
 # Model path (ONNX model)
 # model_path = "models/russian-medium.onnx"

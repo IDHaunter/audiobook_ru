@@ -5,9 +5,9 @@ import sys
 
 
 def main() -> None:
-    """Main entry point for the audiobook-ru CLI."""
+    """Main entry point for the audiobook_ru CLI."""
     parser = argparse.ArgumentParser(
-        prog="audiobook-ru",
+        prog="audiobook_ru",
         description="Convert Russian-language books to audiobooks using local Piper TTS",
     )
 
@@ -125,7 +125,7 @@ def main() -> None:
 def _cmd_doctor(args) -> None:
     """Run doctor check."""
     import sys
-    print("audiobook-ru doctor check")
+    print("audiobook_ru doctor check")
     print(f"Python: {__import__('sys').version}")
     print("Piper: import OK (verified at install)")
     print("FFmpeg: available")
