@@ -53,7 +53,7 @@ synthesize:
 	@echo "Usage: make synthesize MODEL=path/to/model.onnx [FORCE=1] [RETRY_FAILED=1]"
 	@if [ -z "$(MODEL)" ]; then \
 		echo "Error: MODEL variable not set"; \
-		echo "Example: make synthesize MODEL=ru_RU-medium-high.onnx"; \
+		echo "Example: make synthesize MODEL=ru_RU-denis-medium.onnx"; \
 	else \
 		python -m audiobook_ru synthesize --model "$(MODEL)" $(FORCE_PARAM) $(RETRY_PARAM); \
 	fi

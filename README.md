@@ -38,7 +38,14 @@ make install
 python3 -m audiobook_ru prepare input/book.txt
 
 # 2. Synthesize audio with a Russian Piper model
-python3 -m audiobook_ru synthesize --model models/ru_RU-medium-high.onnx
+
+curl -L -o models/ru_RU-dmitri-medium.onnx \
+  https://huggingface.co/rhasspy/piper-voices/resolve/main/ru/ru_RU/dmitri/medium/ru_RU-dmitri-medium.onnx
+
+curl -L -o models/ru_RU-dmitri-medium.onnx.json \
+  https://huggingface.co/rhasspy/piper-voices/resolve/main/ru/ru_RU/dmitri/medium/ru_RU-dmitri-medium.onnx.json
+
+python3 -m audiobook_ru synthesize --model models/ru_RU-dmitri-medium.onnx
 
 # 3. Assemble into chapters and full audiobook
 python3 -m audiobook_ru assemble
@@ -116,7 +123,7 @@ audiobook_ru prepare input/book.txt [OPTIONS]
 Synthesize audio from prepared segments.
 
 ```bash
-audiobook_ru synthesize --model models/ru_RU-medium-high.onnx [OPTIONS]
+audiobook_ru synthesize --model models/ru_RU-denis-medium.onnx [OPTIONS]
 ```
 
 **Options:**
@@ -136,7 +143,7 @@ audiobook_ru synthesize --model models/ru_RU-medium-high.onnx [OPTIONS]
 Preview a single synthesized segment as WAV.
 
 ```bash
-audiobook_ru preview --segment segment_0001 --model models/ru_RU-medium-high.onnx
+audiobook_ru preview --segment segment_0001 --model models/ru_RU-denis-medium.onnx
 ```
 
 **Options:**
