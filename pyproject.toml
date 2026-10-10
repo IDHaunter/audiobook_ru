@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "audiobook-ru"
+version = "0.1.0"
+description = "Convert Russian-language books to audiobooks using local Piper TTS"
+requires-python = ">=3.12"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "piper-tts>=1.8.0,<2.0.0",
+    "ffmpeg-python>=0.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3,<9.0",
+    "ruff>=0.8,<1.0",
+]
+
+[project.scripts]
+audiobook-ru = "audiobook_ru.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["audiobook_ru*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100

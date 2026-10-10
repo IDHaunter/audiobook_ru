@@ -1,0 +1,25 @@
+# audiobook-ru configuration file
+
+# Model path (ONNX model)
+# model_path = "models/russian-medium.onnx"
+
+# Work directory for intermediate files
+# work_dir = "work"
+
+# Output directory for final audio
+# output_dir = "output"
+
+# Maximum characters per segment (for chunking)
+# max_chars = 2200
+
+# Silence duration in milliseconds between segments
+# silence_duration_ms = 250
+
+# Silence duration in milliseconds between chapters
+# chapter_silence_duration_ms = 700
+
+# MP3 bitrate for chapter files
+# mp3_bitrate = "192k"
+
+# Log level
+# log_level = "INFO"
