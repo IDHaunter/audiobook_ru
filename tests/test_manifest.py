@@ -53,7 +53,7 @@ class TestValidateManifestSchema:
             "chapters": [],
         }
         # This should not raise
-        warnings = validate_manifest_schema(manifest_data, strict=False)
+        validate_manifest_schema(manifest_data, strict=False)
         # May have warnings about missing fields, but shouldn't crash
 
     def test_missing_schema_version(self):

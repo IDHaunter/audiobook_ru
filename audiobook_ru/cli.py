@@ -202,7 +202,6 @@ def _cmd_prepare(args, max_chars: int) -> None:
         input_path=args.input_file,
         work_dir=args.workdir,
         max_chars=max_chars,
-        config_path=args.config,
     )
     print(f"Prepared {result['chapters']} chapters with {result['segments']} segments")
     print(f"Manifest: {args.workdir}/manifest.json")
