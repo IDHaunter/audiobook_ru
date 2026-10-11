@@ -2,6 +2,8 @@
 
 import argparse
 import sys
+import tomllib
+from pathlib import Path
 
 
 def main() -> None:
@@ -35,8 +37,8 @@ def main() -> None:
     prepare_parser.add_argument(
         "--max-chars",
         type=int,
-        default=2200,
-        help="Maximum characters per segment (default: 2200)",
+        default=None,
+        help="Maximum characters per segment (default: 1000 from config or code)",
     )
     prepare_parser.add_argument(
         "--config",
@@ -127,15 +129,29 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    if args.command is None:
-        parser.print_help()
-        sys.exit(1)
+    # Resolve max_chars with priority: config file > CLI > default 1000
+    max_chars = None
+    cli_max_chars = getattr(args, "max_chars", None)
+    if cli_max_chars is not None:
+        max_chars = cli_max_chars
+    elif args.config:
+        config_path = Path(args.config)
+        if config_path.is_file():
+            try:
+                with open(config_path, "rb") as f:
+                    config = tomllib.load(f)
+                if "max_chars" in config:
+                    max_chars = config["max_chars"]
+            except (tomllib.TOMLDecodeError, OSError):
+                pass
 
-    # Dispatch to command handlers
+    if max_chars is None:
+        max_chars = 1000  # hard default
+
     if args.command == "doctor":
         _cmd_doctor(args)
     elif args.command == "prepare":
-        _cmd_prepare(args)
+        _cmd_prepare(args, max_chars)
     elif args.command == "preview":
         _cmd_preview(args)
     elif args.command == "synthesize":
@@ -158,7 +174,7 @@ def _cmd_doctor(args) -> None:
     print("Output directory writable: yes")
 
 
-def _cmd_prepare(args) -> None:
+def _cmd_prepare(args, max_chars: int) -> None:
     """Run prepare command."""
     from .prepare import prepare_book
     import sys
@@ -166,7 +182,7 @@ def _cmd_prepare(args) -> None:
     result = prepare_book(
         input_path=args.input_file,
         work_dir=args.workdir,
-        max_chars=args.max_chars,
+        max_chars=max_chars,
         config_path=args.config,
     )
     print(f"Prepared {result['chapters']} chapters with {result['segments']} segments")

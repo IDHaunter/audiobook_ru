@@ -189,4 +189,4 @@ class Manifest:
     @staticmethod
     def default_settings() -> dict:
         """Return default preparation settings."""
-        return {"max_chars": 2200, "normalizer_version": "1.0.0"}
+        return {"max_chars": 1000, "normalizer_version": "1.0.0"}

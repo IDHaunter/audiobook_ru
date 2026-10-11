@@ -13,7 +13,7 @@ from .text import chunking
 def prepare_book(
     input_path: str,
     work_dir: str = "work",
-    max_chars: int = 2200,
+    max_chars: int = 1000,
     config_path: str = None,
 ) -> dict:
     """Parse a book into chapters and TTS-sized text segments.

@@ -74,55 +74,27 @@ class SileroEngine:
         """Load the Silero TTS model from torch.hub."""
         if self._model is None:
             logger.info("Loading Silero TTS model (%s) with speaker %s...", self.model_name, self.speaker)
-
-            # Try the speaker name as-is first, then try aliases
-            speaker_variants = [self.speaker] + self.SPEAKER_ALIASES.get(self.speaker, [])
             
-            loaded = False
-            for speaker in speaker_variants:
-                try:
-                    result = torch.hub.load(
-                        repo_or_dir='snakers4/silero-models',
-                        model='silero_tts',
-                        language='ru',
-                        speaker=speaker,
-                    )
-                    # Handle different return formats from torch.hub.load
-                    if isinstance(result, tuple):
-                        self._model = result[0]
-                    elif isinstance(result, list):
-                        self._model = result[0]
-                    else:
-                        self._model = result
-                    self._model.to(torch.device('cpu'))
-                    logger.info("Loaded Silero model with speaker %s", speaker)
-                    loaded = True
-                    break
-                except Exception as e:
-                    logger.debug("Failed to load with speaker %s: %s", speaker, e)
-                    continue
-
-            if not loaded:
-                # As a last resort, try loading without specifying a speaker
-                # (will use default) or raise an error
-                logger.warning("Could not load model with any speaker variant, trying without speaker...")
-                try:
-                    result = torch.hub.load(
-                        repo_or_dir='snakers4/silero-models',
-                        model='silero_tts',
-                        language='ru',
-                    )
-                    # Handle different return formats
-                    if isinstance(result, tuple):
-                        self._model = result[0]
-                    elif isinstance(result, list):
-                        self._model = result[0]
-                    else:
-                        self._model = result
-                    self._model.to(torch.device('cpu'))
-                    logger.info("Loaded Silero model without speaker specification")
-                except Exception as e:
-                    raise RuntimeError(f"Failed to load Silero TTS model: {e}")
+            try:
+                result = torch.hub.load(
+                    repo_or_dir='snakers4/silero-models',
+                    model='silero_tts',
+                    language='ru',
+                    speaker='v4_ru',  # it is model ID, not speaker name
+                )
+                
+                # torch.hub.load возвращает кортеж (model, example_text)
+                if isinstance(result, tuple):
+                    self._model = result[0]
+                elif isinstance(result, list):
+                    self._model = result[0]
+                else:
+                    self._model = result
+                    
+                self._model.to(torch.device('cpu'))
+                logger.info("Loaded Silero model successfully")
+            except Exception as e:
+                raise RuntimeError(f"Failed to load Silero TTS model: {e}")
 
     def synthesize(self, text: str, output_path: str) -> dict:
         """Synthesize text to WAV file using Silero.

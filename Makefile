@@ -40,7 +40,7 @@ doctor:
 
 # --- Text preparation ---
 prepare:
-	@echo "Usage: make prepare INPUT=path/to/book.txt [MAX_CHARS=2200]"
+	@echo "Usage: make prepare INPUT=path/to/book.txt [MAX_CHARS=1000]"
 	@if [ -z "$(INPUT)" ]; then \
 		echo "Error: INPUT variable not set"; \
 		echo "Example: make prepare INPUT=book.txt"; \
