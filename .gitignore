@@ -219,6 +219,9 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+# Python artifacts
+audiobook_ru.egg-info/
+
 # Structure generator
 structure.md
 generate_structure.py

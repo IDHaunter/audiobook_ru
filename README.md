@@ -31,29 +31,59 @@ make install
 - macOS with Apple Silicon recommended (ffmpeg via Homebrew)
 - Piper Russian voice model (download separately)
 
-## Quick Start
+## 1. Prepare book text
 
 ```bash
-# 1. Prepare book text
 python3 -m audiobook_ru prepare input/book.txt
+```
 
-# 2. Synthesize audio with a Russian Piper model
+## 2. Synthesize audio
 
+### 2.1 Synthesize audio with a Russian Piper model
+
+```bash
+# Download model from HuggingFace
 curl -L -o models/ru_RU-dmitri-medium.onnx \
   https://huggingface.co/rhasspy/piper-voices/resolve/main/ru/ru_RU/dmitri/medium/ru_RU-dmitri-medium.onnx
 
 curl -L -o models/ru_RU-dmitri-medium.onnx.json \
   https://huggingface.co/rhasspy/piper-voices/resolve/main/ru/ru_RU/dmitri/medium/ru_RU-dmitri-medium.onnx.json
 
+# run synthesizer
 python3 -m audiobook_ru synthesize --model models/ru_RU-dmitri-medium.onnx
-
-# 3. Assemble into chapters and full audiobook
-python3 -m audiobook_ru assemble
-
-# Output: output/audiobook.mp3 and output/chapter_*.mp3
 ```
 
-## Clean Work
+### 2.2 Synthesize audio with a Silero TTS
+
+You can also use Silero TTS, which supports multiple Russian voice variants:
+
+```bash
+# Using default voice (kseniya)
+python3 -m audiobook_ru synthesize --engine silero --model dummy
+
+# Using a specific voice variant
+python3 -m audiobook_ru synthesize --engine silero --voice aidar --model dummy
+
+# Available voice variants: aidar, baya, kseniya, xenia, eugene
+```
+
+### Voice Variants
+
+Silero Russian TTS supports the following voice speakers:
+
+- `aidar` - male, clear Russian accent
+- `baya` - female, expressive
+- `kseniya` - female, neutral (default)
+- `xenia` - female, warm
+- `eugene` - male, different timbre
+
+## 3. Assemble into chapters and full audiobook
+python3 -m audiobook_ru assemble
+
+Output: output/audiobook.mp3 and output/chapter_*.mp3
+
+## 4. Clean up work 
+
 
 ```bash
 make clean  
@@ -207,10 +237,8 @@ The text processing pipeline handles:
 ## Testing
 
 ```bash
-# Run all 27 tests
+# Run all tests
 python3 -m pytest tests/ -v
-
-# Expected: 27 passed
 ```
 
 ## License

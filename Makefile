@@ -26,10 +26,10 @@ help:
 
 # --- Installation ---
 install:
-	pip install -e ".[dev]"
+	python3 -m pip install -e ".[dev]"
 
 install-deps:
-	pip install piper-tts ffmpeg-python
+	python3 -m pip install piper-tts ffmpeg-python
 
 # --- Environment checks ---
 doctor:
@@ -66,6 +66,27 @@ synthesize-force: synthesize
 synthesize-retry: MODEL ?= 
 synthesize-retry: RETRY_PARAM=--retry-failed
 synthesize-retry: synthesize
+
+# --- Silero targets ---
+synthesize-silero: ENGINE ?= silero
+synthesize-silero: VOICE ?= kseniya
+synthesize-silero: synthesize
+
+synthesize-silero-aidar: ENGINE ?= silero
+synthesize-silero-aidar: VOICE ?= adar
+synthesize-silero-aidar: synthesize
+
+synthesize-silero-baya: ENGINE ?= silero
+synthesize-silero-baya: VOICE ?= baya
+synthesize-silero-baya: synthesize
+
+synthesize-silero-xenia: ENGINE ?= silero
+synthesize-silero-xenia: VOICE ?= xenia
+synthesize-silero-xenia: synthesize
+
+synthesize-silero-eugene: ENGINE ?= silero
+synthesize-silero-eugene: VOICE ?= eugene
+synthesize-silero-eugene: synthesize
 
 # --- Assembly ---
 assemble:

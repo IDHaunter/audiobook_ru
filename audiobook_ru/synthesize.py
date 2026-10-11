@@ -12,17 +12,27 @@ from . import tts as tts_mod
 from .pipeline import manifest as manifest_mod
 
 
-def synthesize_segment(work_dir: str, segment_id: str, model_path: str) -> str:
+def synthesize_segment(
+    work_dir: str,
+    segment_id: str,
+    model_path: str,
+    engine: str = "piper",
+    voice: str = "kseniya",
+) -> str:
     """Synthesize a single segment to WAV audio.
 
     Args:
         work_dir: Base work directory containing the manifest and segments.
         segment_id: The segment ID to synthesize (e.g. 'segment_0001').
-        model_path: Path to the Piper ONNX model file.
+        model_path: Path to the Piper ONNX model file or Silero hub model.
+        engine: TTS engine to use ('piper' or 'silero').
+        voice: Voice variant (default: kseniya, only for silero).
 
     Returns:
         Path to the synthesized WAV file.
     """
+    from . import tts as tts_mod
+
     work_path = Path(work_dir)
     manifest_path = work_path / "manifest.json"
 
@@ -49,7 +59,11 @@ def synthesize_segment(work_dir: str, segment_id: str, model_path: str) -> str:
         return str(work_path / "output" / f"{segment_id}.wav")
 
     # Use the TTS engine to synthesize
-    tts_engine = tts_mod.PiperEngine(model_path=model_path, work_dir=work_dir)
+    tts_engine = (
+        tts_mod.SileroEngine(model_name=model_path, speaker=voice)
+        if engine == "silero"
+        else tts_mod.PiperEngine(model_path=model_path, work_dir=work_dir)
+    )
     output_path = work_path / "output" / f"{segment_id}.wav"
 
     # Ensure output directory exists
@@ -64,6 +78,8 @@ def synthesize_segment(work_dir: str, segment_id: str, model_path: str) -> str:
 def run_synthesis(
     work_dir: str,
     model_path: str,
+    engine: str = "piper",
+    voice: str = "kseniya",
     force: bool = False,
     retry_failed: bool = False,
 ) -> int:
@@ -71,13 +87,17 @@ def run_synthesis(
 
     Args:
         work_dir: Base work directory containing the manifest and segments.
-        model_path: Path to the Piper ONNX model file.
+        model_path: Path to the Piper ONNX model file or Silero hub model.
+        engine: TTS engine to use ('piper' or 'silero').
+        voice: Voice variant (default: kseniya, only for silero).
         force: If True, regenerate all segments even if valid audio exists.
         retry_failed: If True, retry only failed segments.
 
     Returns:
         Exit code (0 for success).
     """
+    from . import tts as tts_mod
+
     work_path = Path(work_dir)
     manifest_path = work_path / "manifest.json"
 
@@ -128,7 +148,14 @@ def run_synthesis(
 
             if segment_text.strip():
                 try:
-                    tts_engine = tts_mod.PiperEngine(model_path=model_path, work_dir=work_dir)
+                    # Select TTS engine based on the engine parameter
+                    from . import tts as tts_mod
+
+                    if engine == "silero":
+                        tts_engine = tts_mod.SileroEngine(model_name=model_path, speaker=voice)
+                    else:
+                        tts_engine = tts_mod.PiperEngine(model_path=model_path, work_dir=work_dir)
+
                     tts_engine.synthesize(segment_text, str(seg_output))
                     synthesized_count += 1
                     print(f"Synthesized {segment_id}")

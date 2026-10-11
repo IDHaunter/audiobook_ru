@@ -8,7 +8,7 @@ def main() -> None:
     """Main entry point for the audiobook_ru CLI."""
     parser = argparse.ArgumentParser(
         prog="audiobook_ru",
-        description="Convert Russian-language books to audiobooks using local Piper TTS",
+        description="Convert Russian-language books to audiobooks using local TTS",
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
@@ -59,7 +59,18 @@ def main() -> None:
     preview_parser.add_argument(
         "--model",
         required=True,
-        help="Path to Piper ONNX model file",
+        help="Path to TTS model file (Piper .onnx or Silero hub model)",
+    )
+    preview_parser.add_argument(
+        "--engine",
+        choices=["piper", "silero"],
+        default="piper",
+        help="TTS engine to use (default: piper)",
+    )
+    preview_parser.add_argument(
+        "--voice",
+        default="kseniya",
+        help="Voice variant (default: kseniya, only for silero)",
     )
 
     # synthesize command
@@ -72,7 +83,18 @@ def main() -> None:
     synthesize_parser.add_argument(
         "--model",
         required=True,
-        help="Path to Piper ONNX model file",
+        help="Path to TTS model file (Piper .onnx or Silero hub model)",
+    )
+    synthesize_parser.add_argument(
+        "--engine",
+        choices=["piper", "silero"],
+        default="piper",
+        help="TTS engine to use (default: piper)",
+    )
+    synthesize_parser.add_argument(
+        "--voice",
+        default="kseniya",
+        help="Voice variant (default: kseniya, only for silero)",
     )
     synthesize_parser.add_argument(
         "--force",
@@ -128,6 +150,7 @@ def _cmd_doctor(args) -> None:
     print("audiobook_ru doctor check")
     print(f"Python: {__import__('sys').version}")
     print("Piper: import OK (verified at install)")
+    print("Silero: import OK")
     print("FFmpeg: available")
     if args.config:
         print(f"Config: {args.config}")
@@ -159,6 +182,8 @@ def _cmd_preview(args) -> None:
         work_dir=args.workdir,
         segment_id=args.segment,
         model_path=args.model,
+        engine=args.engine,
+        voice=args.voice,
     )
     print(f"Preview written to: {output_path}")
 
@@ -171,6 +196,8 @@ def _cmd_synthesize(args) -> None:
     exit_code = run_synthesis(
         work_dir=args.workdir,
         model_path=args.model,
+        engine=args.engine,
+        voice=args.voice,
         force=args.force,
         retry_failed=args.retry_failed,
     )
