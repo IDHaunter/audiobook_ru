@@ -226,6 +226,9 @@ audiobook_ru.egg-info/
 structure.md
 generate_structure.py
 
+# models
+models/
+
 # book text and work results
 .DS_Store
 input/.DS_Store
