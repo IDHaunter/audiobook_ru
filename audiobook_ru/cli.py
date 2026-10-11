@@ -130,11 +130,13 @@ def main() -> None:
     args = parser.parse_args()
 
     # Resolve max_chars with priority: config file > CLI > default 1000
-    max_chars = None
+    # Config file is auto-loaded from config/config.example.toml if it exists
+    # and --config is not explicitly provided
+    config_path: Path | None = None
     cli_max_chars = getattr(args, "max_chars", None)
     if cli_max_chars is not None:
         max_chars = cli_max_chars
-    elif args.config:
+    elif getattr(args, "config", None):
         config_path = Path(args.config)
         if config_path.is_file():
             try:
@@ -144,6 +146,23 @@ def main() -> None:
                     max_chars = config["max_chars"]
             except (tomllib.TOMLDecodeError, OSError):
                 pass
+    else:
+        # Auto-load config from default path if --config not explicitly provided
+        default_config_paths = [
+            Path("config/config.toml"),
+            Path("config/config.example.toml"),
+        ]
+        for potential_path in default_config_paths:
+            if potential_path.is_file():
+                try:
+                    with open(potential_path, "rb") as f:
+                        config = tomllib.load(f)
+                    if "max_chars" in config:
+                        max_chars = config["max_chars"]
+                        config_path = potential_path
+                    break
+                except (tomllib.TOMLDecodeError, OSError):
+                    continue
 
     if max_chars is None:
         max_chars = 1000  # hard default

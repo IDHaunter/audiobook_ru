@@ -10,7 +10,7 @@
 # output_dir = "output"
 
 # Maximum characters per segment (for chunking)
-max_chars = 1000
+max_chars = 500
 
 # Silence duration in milliseconds between segments
 # silence_duration_ms = 250
